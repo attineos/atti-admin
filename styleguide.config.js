@@ -46,8 +46,9 @@ module.exports = {
       ],
     },
     {
-      name: 'CRUD',
+      name: 'Forms',
       components: [
+        'src/components/Form/index.js',
         'src/components/FormField/index.js',
         'src/components/FormFieldInput/index.js',
         'src/components/FormGroup/index.js',
