@@ -54,6 +54,12 @@ module.exports = {
         'src/components/FormGroup/index.js',
       ],
     },
+    {
+      name: 'REST CRUD',
+      components: [
+        'src/components/CRUForm/index.js',
+      ],
+    },
   ],
   styleguideComponents: {
     Wrapper: path.join(__dirname, 'src/styleguide/Wrapper'),

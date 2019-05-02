@@ -1,19 +1,20 @@
 import React, { Component } from 'react'
 
-import { map, cloneDeep, forEach, find, mapValues } from 'lodash'
+import FormGroup from '../FormGroup'
+
+import { Button } from 'atti-components'
+
+import { map, cloneDeep, forEach, find, set, noop, get } from 'lodash'
 
 class Form extends Component {
 
   getConfig() {
     const newConfig = cloneDeep(this.props.config)
 
-    forEach(this.props.data, (value, index) => {
-      forEach(newConfig, groupConfig => {
-        const configItem = find(groupConfig.fields, { field: index })
-        if (configItem) {
-          configItem.value = value
-          configItem.onChange = this.handleValueChange(index)
-        }
+    forEach(newConfig, groupConfig => {
+      forEach(groupConfig.fields, field => {
+        set(field, 'value', get(this.props.data, field.field, null))
+        set(field, 'onChange', this.handleValueChange(field.field))
       })
     })
 
@@ -27,13 +28,9 @@ class Form extends Component {
       newValue = e.target.value
     }
 
-    const newData = mapValues(this.props.data, (oldValue, index) => {
-      if (index === fieldName) {
-        return newValue
-      }
+    const newData = cloneDeep(this.props.data)
 
-      return oldValue
-    })
+    set(newData, fieldName, newValue)
 
     this.props.onDataChange(newData)
   }
@@ -45,8 +42,14 @@ class Form extends Component {
       { map(config, groupConfig => (<FormGroup
         {...groupConfig}
       />)) }
+      <Button type="submit">{ this.props.submitButtonText || 'Send' }</Button>
     </form>
   }
+}
+
+Form.defaultProps = {
+  onSubmit: noop,
+  onDataChange: noop,
 }
 
 export default Form
