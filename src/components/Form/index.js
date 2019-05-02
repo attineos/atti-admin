@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
-
-import FormGroup from '../FormGroup'
+import PropTypes from 'prop-types'
+import { map, cloneDeep, forEach, find, set, noop, get } from 'lodash'
 
 import { Button } from 'atti-components'
 
-import { map, cloneDeep, forEach, find, set, noop, get } from 'lodash'
+import FormGroup from '../FormGroup'
 
 class Form extends Component {
 
@@ -14,6 +14,7 @@ class Form extends Component {
     forEach(newConfig, groupConfig => {
       forEach(groupConfig.fields, field => {
         set(field, 'value', get(this.props.data, field.field, null))
+        set(field, 'error', get(this.props.errors, field.field, null))
         set(field, 'onChange', this.handleValueChange(field.field))
       })
     })
@@ -40,6 +41,7 @@ class Form extends Component {
 
     return <form onSubmit={this.props.onSubmit}>
       { map(config, groupConfig => (<FormGroup
+        key={ groupConfig.name }
         {...groupConfig}
       />)) }
       <Button type="submit">{ this.props.submitButtonText || 'Send' }</Button>
@@ -47,9 +49,18 @@ class Form extends Component {
   }
 }
 
+Form.propTypes = {
+  config: PropTypes.array.isRequired,
+  data: PropTypes.object.isRequired,
+  onSubmit: PropTypes.func,
+  onDataChange: PropTypes.func,
+  errors: PropTypes.array.isRequired,
+}
+
 Form.defaultProps = {
   onSubmit: noop,
   onDataChange: noop,
+  errors: [],
 }
 
 export default Form

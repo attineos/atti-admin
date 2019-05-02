@@ -1,4 +1,4 @@
-export CRUForm from './CRUForm'
+export CRUForm from './CRUDForm'
 export Form from './Form'
 export FormField from './FormField'
 export FormFieldInput from './FormFieldInput'

@@ -57,7 +57,7 @@ module.exports = {
     {
       name: 'REST CRUD',
       components: [
-        'src/components/CRUForm/index.js',
+        'src/components/CRUDForm/index.js',
       ],
     },
   ],

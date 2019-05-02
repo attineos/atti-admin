@@ -39,7 +39,7 @@ config={
     }]  
 }
 
-;<CRUForm
+;<CRUDForm
     mode= 'MODE_NEW'
     config={config}
 />
