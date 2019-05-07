@@ -1,8 +1,8 @@
 {
-  "name": "atti-auto-admin",
+  "name": "atti-admin",
   "version": "0.0.1",
   "description": "Create easily administration panels from REST API",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
     "build": "webpack --config webpack/web.config.babel.js",
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -13,7 +13,7 @@
   "author": "Valentin Letourneur <valentin.letourneur@wanadoo.fr> (https://www.atrakeur.com/)",
   "license": "MIT",
   "dependencies": {
-    "atti-components": "0.1.0-rc15"
+    "atti-components": "^0.1.0-rc26"
   },
   "peerDependencies": {
     "react": "^16.4.1",

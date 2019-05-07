@@ -1,7 +1,7 @@
 const { camelCase, upperFirst } = require('lodash')
 const path = require('path')
 
-const TITLE = 'Atti-Auto-Admin'
+const TITLE = 'Atti-Admin'
 
 module.exports = {
   title: `${TITLE}`,
