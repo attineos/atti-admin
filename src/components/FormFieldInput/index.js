@@ -19,7 +19,7 @@ const FormFieldInput = ({
     case 'integer': return <Input id={name} type="number" value={value} onChange={e => onValueChange(e.target.value)} {...props} />
     case 'float': return <Input id={name} value={value} onChange={e => onValueChange(e.target.value)} {...props} />
     case 'number': return <Input id={name} value={value} onChange={e => onValueChange(e.target.value)} {...props} />
-    case 'date': return <Input id={name} type="date" value={value} onChange={e => onValueChange(e.target.value)} {...props} />
+    case 'date': return <Input id={name} type="datetime-local" value={value} onChange={e => onValueChange(e.target.value)} {...props} />
 
     default: throw new Error(`Unsupported FieldInput of type ${type}`)
   }
