@@ -20,7 +20,7 @@ class CRUDForm extends Component {
   }
 
   getFetcher() {
-    const CustomFetcher = this.props.customFetcher? this.props.customFetcher: RestFetcher
+    const CustomFetcher = this.props.customFetcher ? this.props.customFetcher : RestFetcher
     return new CustomFetcher(this.props.config)
   }
 
@@ -48,12 +48,13 @@ class CRUDForm extends Component {
   componentDidMount() {
     const fetcher = this.getFetcher()
 
-    fetcher.getData().then(data => {
-      this.setState({
-        data: data,
-        isLoaded: true,
+    if (!this.state.isLoaded)
+      fetcher.getData().then(data => {
+        this.setState({
+          data: data,
+          isLoaded: true,
+        })
       })
-    })
   }
 
   render() {
@@ -62,10 +63,10 @@ class CRUDForm extends Component {
     }
 
     return <Form
-      config={ this.props.config.groups }
-      data={ this.state.data }
-      onDataChange={ this.handleDataChange }
-      onSubmit={ this.handleSubmit }
+      config={this.props.config.groups}
+      data={this.state.data}
+      onDataChange={this.handleDataChange}
+      onSubmit={this.handleSubmit}
     />
   }
 }
