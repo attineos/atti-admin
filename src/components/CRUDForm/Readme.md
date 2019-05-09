@@ -14,7 +14,7 @@ config={
             'field': 'id',
             'label': 'Id',
             'type': 'number',
-            'readonly': true,
+            'readOnly': true,
         }, {
             'field': 'name',
             'label': 'Name',

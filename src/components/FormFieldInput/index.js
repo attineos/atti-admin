@@ -11,7 +11,6 @@ const FormFieldInput = ({
   onValueChange,
   ...props,
 }) => {
-  console.log(name, type, value, ...props)
   switch (type) {
     case 'text': return <Input id={name} value={value} onChange={e => onValueChange(e.target.value)} {...props} />
     case 'password': return <Input id={name} type="password" value={value} onChange={e => onValueChange(e.target.value)} {...props} />
