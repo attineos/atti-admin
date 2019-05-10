@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { cloneDeep, forEach, set, noop } from 'lodash'
+import { cloneDeep, forEach, set, noop, isNumber } from 'lodash'
 
 import { Loader } from 'atti-components'
 
@@ -61,7 +61,7 @@ class CRUDForm extends Component {
 
       forEach(newConfig, groupConfig => {
         forEach(groupConfig.fields, field => {
-          set(newData, field.field, field.defaultValue ? field.defaultValue : null)
+          set(newData, field.field, field.defaultValue || isNumber(field.defaultValue) ? field.defaultValue : null)
         })
       })
       this.setState({
