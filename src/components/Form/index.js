@@ -13,7 +13,7 @@ class Form extends Component {
 
     forEach(newConfig, groupConfig => {
       forEach(groupConfig.fields, field => {
-        set(field, 'value', get(this.props.data, field.field, field.defaultValue ? field.defaultValue : null))
+        set(field, 'value', get(this.props.data, field.field, field.defaultValue))
         set(field, 'error', get(this.props.errors, field.field, null))
         set(field, 'onChange', this.handleValueChange(field.field))
       })
