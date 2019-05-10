@@ -2,6 +2,7 @@ import React from 'react'
 
 import {
   Input,
+  Select
 } from 'atti-components'
 
 const FormFieldInput = ({
@@ -20,6 +21,7 @@ const FormFieldInput = ({
     case 'float': return <Input id={name} value={value} onChange={e => onValueChange(e.target.value)} {...props} />
     case 'number': return <Input id={name} value={value} onChange={e => onValueChange(e.target.value)} {...props} />
     case 'date': return <Input id={name} type="datetime-local" value={value} onChange={e => onValueChange(e.target.value)} {...props} />
+    case 'select': return <Select id={name} value={value} onChange={e => onValueChange(e.target.value)} {...props} />
 
     default: throw new Error(`Unsupported FieldInput of type ${type}`)
   }
