@@ -57,7 +57,7 @@ class CRUDForm extends Component {
       })
     else {
       const newConfig = cloneDeep(this.props.config.groups)
-      const newData = cloneDeep(this.props.data)
+      const newData = cloneDeep(this.state.data)
 
       forEach(newConfig, groupConfig => {
         forEach(groupConfig.fields, field => {
