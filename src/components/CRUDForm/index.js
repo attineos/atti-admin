@@ -61,7 +61,7 @@ class CRUDForm extends Component {
 
       forEach(newConfig, groupConfig => {
         forEach(groupConfig.fields, field => {
-          set(newData, field.field, field.defaultValue)
+          set(newData, field.field, field.default)
         })
       })
       this.setState({

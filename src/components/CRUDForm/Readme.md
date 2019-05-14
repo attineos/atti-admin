@@ -28,6 +28,7 @@ config={
         'field': 'address.city',
         'label': 'Ville',
         'type': 'select',
+        'default':'Tokyo',
         'options': [{ id: 'Paris' }, { id: 'Tokyo' }, { id: 'Rouen' }, { id: 'New York' }, { id: 'Londres' }, { id: 'Madrid' }, { id: 'Rome' }],
       }]
     }, {
@@ -56,7 +57,7 @@ config={
 }
 
 ;<CRUDForm
-    mode= 'MODE_UPDATE'
+    mode= 'MODE_NEW'
     config={config}
 />
 ```
