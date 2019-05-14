@@ -42,6 +42,16 @@ config={
             'label': 'Catch phrase',
             'type': 'text',
         }]
+    }, {
+        name: 'contact',
+        label: 'Contact Details',
+        hidden:true,
+        fields: [{
+            'field': 'phone',
+            'label': 'Phone',
+            'type': 'text',
+        }
+        ]
     }]  
 }
 

@@ -40,7 +40,7 @@ class Form extends Component {
     const config = this.getConfig()
 
     return <form onSubmit={this.props.onSubmit}>
-      {map(config, groupConfig => (<FormGroup
+      {map(config, groupConfig => (!groupConfig.hidden && <FormGroup
         key={groupConfig.name}
         {...groupConfig}
       />))}
