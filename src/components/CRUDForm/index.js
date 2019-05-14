@@ -80,6 +80,7 @@ class CRUDForm extends Component {
       data={this.state.data}
       onDataChange={this.handleDataChange}
       onSubmit={this.handleSubmit}
+      submitButtonText={this.props.config.submitButtonText}
     />
   }
 }
