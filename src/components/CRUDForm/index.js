@@ -26,7 +26,9 @@ class CRUDForm extends Component {
 
   handleDataChange = data => this.setState({ data })
 
-  handleSubmit = () => {
+  handleSubmit = e => {
+    e.preventDefault()
+    
     const fetcher = this.getFetcher()
 
     if (this.props.mode === CRUDFORM_MODE_NEW) {
