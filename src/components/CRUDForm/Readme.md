@@ -2,6 +2,7 @@ A Form
 
 ```js 
 config={
+    submitButtonText: 'Submit button',
     urls: {
         get: 'https://jsonplaceholder.typicode.com/users/1',
         create: 'https://jsonplaceholder.typicode.com/users',
@@ -14,7 +15,7 @@ config={
             'field': 'id',
             'label': 'Id',
             'type': 'number',
-            'readonly': true,
+            'readOnly': true,
         }, {
             'field': 'name',
             'label': 'Name',
@@ -23,7 +24,13 @@ config={
             'field': 'username',
             'label': 'Username',
             'type': 'text',
-        }]
+        },{
+        'field': 'address.city',
+        'label': 'Ville',
+        'type': 'select',
+        'default':'Tokyo',
+        'options': [{ id: 'Paris' }, { id: 'Tokyo' }, { id: 'Rouen' }, { id: 'New York' }, { id: 'Londres' }, { id: 'Madrid' }, { id: 'Rome' }],
+      }]
     }, {
         name: 'company',
         label: 'Company Details',
@@ -36,6 +43,16 @@ config={
             'label': 'Catch phrase',
             'type': 'text',
         }]
+    }, {
+        name: 'contact',
+        label: 'Contact Details',
+        hidden:true,
+        fields: [{
+            'field': 'phone',
+            'label': 'Phone',
+            'type': 'text',
+        }
+        ]
     }]  
 }
 

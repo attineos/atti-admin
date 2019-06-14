@@ -7,16 +7,16 @@ import { FormGroupGridWrapper } from './styles'
 import FormField from '../FormField'
 
 const FormGroup = ({
-                      name,
-                      label,
-                      fields,
-                      ...rest,
-                   }) => (<FormGroupGridWrapper id={name}>
+  name,
+  label,
+  fields,
+  ...rest,
+}) => (<FormGroupGridWrapper id={name}>
   <Cell cols={[[1, 7], [1, 7], [1, 4]]} >
-    <Header3>{ label }</Header3>
+    <Header3>{label}</Header3>
   </Cell>
   <Cell cols={[[1, 7], [1, 7], [4, 13]]}>
-    { map(fields, field => <FormField {...field} />)}
+    {map(fields, (field, key) => <FormField key={key} {...field} />)}
   </Cell>
 </FormGroupGridWrapper>)
 

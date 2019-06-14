@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { noop } from 'lodash'
+import { cloneDeep, forEach, set, noop, isNumber } from 'lodash'
 
 import { Loader } from 'atti-components'
 
@@ -20,13 +20,15 @@ class CRUDForm extends Component {
   }
 
   getFetcher() {
-    const CustomFetcher = this.props.customFetcher? this.props.customFetcher: RestFetcher
+    const CustomFetcher = this.props.customFetcher ? this.props.customFetcher : RestFetcher
     return new CustomFetcher(this.props.config)
   }
 
   handleDataChange = data => this.setState({ data })
 
-  handleSubmit = () => {
+  handleSubmit = e => {
+    e.preventDefault()
+    
     const fetcher = this.getFetcher()
 
     if (this.props.mode === CRUDFORM_MODE_NEW) {
@@ -48,12 +50,26 @@ class CRUDForm extends Component {
   componentDidMount() {
     const fetcher = this.getFetcher()
 
-    fetcher.getData().then(data => {
-      this.setState({
-        data: data,
-        isLoaded: true,
+    if (!this.state.isLoaded)
+      fetcher.getData().then(data => {
+        this.setState({
+          data: data,
+          isLoaded: true,
+        })
       })
-    })
+    else {
+      const newConfig = cloneDeep(this.props.config.groups)
+      const newData = cloneDeep(this.state.data)
+
+      forEach(newConfig, groupConfig => {
+        forEach(groupConfig.fields, field => {
+          set(newData, field.field, field.default)
+        })
+      })
+      this.setState({
+        data: newData
+      })
+    }
   }
 
   render() {
@@ -62,10 +78,11 @@ class CRUDForm extends Component {
     }
 
     return <Form
-      config={ this.props.config.groups }
-      data={ this.state.data }
-      onDataChange={ this.handleDataChange }
-      onSubmit={ this.handleSubmit }
+      config={this.props.config.groups}
+      data={this.state.data}
+      onDataChange={this.handleDataChange}
+      onSubmit={this.handleSubmit}
+      submitButtonText={this.props.config.submitButtonText}
     />
   }
 }
