@@ -9,7 +9,8 @@ import RestFetcher from './RestFetcher'
 
 export const CRUDFORM_MODE_NEW = "MODE_NEW"
 export const CRUDFORM_MODE_UPDATE = "MODE_UPDATE"
-export const CRUDFORM_MODES = [CRUDFORM_MODE_NEW, CRUDFORM_MODE_UPDATE]
+export const CRUDFORM_MODE_DELETE = "MODE_DELETE"
+export const CRUDFORM_MODES = [CRUDFORM_MODE_NEW, CRUDFORM_MODE_UPDATE, CRUDFORM_MODE_DELETE]
 
 class CRUDForm extends Component {
 
@@ -41,6 +42,13 @@ class CRUDForm extends Component {
         this.props.onUpdateSuccess(data)
       }, err => {
         this.setState({ errors: this.props.onUpdateError(err) })
+      })
+    }
+    if (this.props.mode === CRUDFORM_MODE_DELETE) {
+      fetcher.deleteData(this.state.data).then(data => {
+        this.props.onDeleteSuccess(data)
+      }, err => {
+        this.setState({errors: this.props.onDeleteError(err) })
       })
     }
   }
