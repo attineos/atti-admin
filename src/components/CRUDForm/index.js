@@ -19,9 +19,15 @@ class CRUDForm extends Component {
     errors: {},
   }
 
-  getFetcher() {
-    const CustomFetcher = this.props.customFetcher? this.props.customFetcher: RestFetcher
-    return new CustomFetcher(this.props.config)
+  componentDidMount() {
+    const fetcher = this.getFetcher()
+
+    fetcher.getData().then(data => {
+      this.setState({
+        data: data,
+        isLoaded: true,
+      })
+    })
   }
 
   handleDataChange = data => this.setState({ data })
@@ -32,6 +38,9 @@ class CRUDForm extends Component {
     if (this.props.mode === CRUDFORM_MODE_NEW) {
       fetcher.createData(this.state.data).then(data => {
         this.props.onCreateSuccess(data)
+        if(this.props.submitAction() !== undefined) {
+          this.props.submitAction()
+        }
       }, err => {
         this.setState({ errors: this.props.onCreateError(err) })
       })
@@ -39,21 +48,30 @@ class CRUDForm extends Component {
     if (this.props.mode === CRUDFORM_MODE_UPDATE) {
       fetcher.updateData(this.state.data).then(data => {
         this.props.onUpdateSuccess(data)
+        if(this.props.submitAction() !== undefined) {
+          this.props.submitAction()
+        }
       }, err => {
         this.setState({ errors: this.props.onUpdateError(err) })
       })
     }
   }
 
-  componentDidMount() {
+  handleDelete = ()  => {
     const fetcher = this.getFetcher()
-
-    fetcher.getData().then(data => {
-      this.setState({
-        data: data,
-        isLoaded: true,
-      })
+    fetcher.deleteData(this.state.data).then(data => {
+      this.props.onDeleteSuccess(data)
+      if(this.props.submitAction() !== undefined) {
+        this.props.submitAction()
+      }
+    }, err => {
+      this.setState({errors: this.props.onDeleteError(err) })
     })
+  }
+
+  getFetcher() {
+    const CustomFetcher = this.props.customFetcher? this.props.customFetcher: RestFetcher
+    return new CustomFetcher(this.props.config)
   }
 
   render() {
@@ -66,6 +84,7 @@ class CRUDForm extends Component {
       data={ this.state.data }
       onDataChange={ this.handleDataChange }
       onSubmit={ this.handleSubmit }
+      onDelete={ this.handleDelete }
     />
   }
 }
@@ -73,6 +92,8 @@ class CRUDForm extends Component {
 CRUDForm.propTypes = {
   mode: PropTypes.oneOf(CRUDFORM_MODES).isRequired,
   config: PropTypes.object.isRequired,
+  submitAction : PropTypes.func,
+  customFetcher: PropTypes.any,
 
   onCreateSuccess: PropTypes.func,
   onUpdateSuccess: PropTypes.func,

@@ -1,26 +1,12 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { map, cloneDeep, forEach, find, set, noop, get } from 'lodash'
+import { map, cloneDeep, forEach, set, noop, get } from 'lodash'
 
 import { Button } from 'atti-components'
 
 import FormGroup from '../FormGroup'
 
 class Form extends Component {
-
-  getConfig() {
-    const newConfig = cloneDeep(this.props.config)
-
-    forEach(newConfig, groupConfig => {
-      forEach(groupConfig.fields, field => {
-        set(field, 'value', get(this.props.data, field.field, null))
-        set(field, 'error', get(this.props.errors, field.field, null))
-        set(field, 'onChange', this.handleValueChange(field.field))
-      })
-    })
-
-    return newConfig
-  }
 
   handleValueChange = (fieldName) => (e) => {
     let newValue = e
@@ -36,6 +22,20 @@ class Form extends Component {
     this.props.onDataChange(newData)
   }
 
+  getConfig() {
+    const newConfig = cloneDeep(this.props.config)
+
+    forEach(newConfig, groupConfig => {
+      forEach(groupConfig.fields, field => {
+        set(field, 'value', get(this.props.data, field.field, null))
+        set(field, 'error', get(this.props.errors, field.field, null))
+        set(field, 'onChange', this.handleValueChange(field.field))
+      })
+    })
+
+    return newConfig
+  }
+
   render () {
     const config = this.getConfig()
 
@@ -44,6 +44,9 @@ class Form extends Component {
         key={ groupConfig.name }
         {...groupConfig}
       />)) }
+      {this.props.delete &&
+        <Button onClick={() => this.props.onDelete()}> Delete </Button>
+      }
       <Button type="submit">{ this.props.submitButtonText || 'Send' }</Button>
     </form>
   }
@@ -54,6 +57,8 @@ Form.propTypes = {
   data: PropTypes.object.isRequired,
   onSubmit: PropTypes.func,
   onDataChange: PropTypes.func,
+  onDelete: PropTypes.func,
+  delete: PropTypes.bool,
   errors: PropTypes.array.isRequired,
 }
 
@@ -61,6 +66,8 @@ Form.defaultProps = {
   onSubmit: noop,
   onDataChange: noop,
   errors: [],
+  onDelete : noop,
+  delete : false,
 }
 
 export default Form

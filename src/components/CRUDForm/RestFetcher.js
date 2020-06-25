@@ -44,6 +44,16 @@ class RestFetcher {
     })
   }
 
+  deleteData(data) {
+    return fetch(this.config.urls.delete, {
+      method: this.config.urls.deleteMethod || 'DELETE',
+      headers: this.headers,
+      body: JSON.stringify(data),
+    }).then((resp) => {
+      return resp.json()
+    })
+  }
+
 }
 
 export default RestFetcher
