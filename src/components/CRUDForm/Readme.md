@@ -7,6 +7,7 @@ config={
         get: 'https://jsonplaceholder.typicode.com/users/1',
         create: 'https://jsonplaceholder.typicode.com/users',
         update: 'https://jsonplaceholder.typicode.com/users/1',
+        delete: 'https://jsonplaceholder.typicode.com/users/1',
     },
     groups: [{
         name: 'profileDetails',

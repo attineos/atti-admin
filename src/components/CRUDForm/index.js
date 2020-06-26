@@ -19,34 +19,6 @@ class CRUDForm extends Component {
     errors: {},
   }
 
-  getFetcher() {
-    const CustomFetcher = this.props.customFetcher ? this.props.customFetcher : RestFetcher
-    return new CustomFetcher(this.props.config)
-  }
-
-  handleDataChange = data => this.setState({ data })
-
-  handleSubmit = e => {
-    e.preventDefault()
-    
-    const fetcher = this.getFetcher()
-
-    if (this.props.mode === CRUDFORM_MODE_NEW) {
-      fetcher.createData(this.state.data).then(data => {
-        this.props.onCreateSuccess(data)
-      }, err => {
-        this.setState({ errors: this.props.onCreateError(err) })
-      })
-    }
-    if (this.props.mode === CRUDFORM_MODE_UPDATE) {
-      fetcher.updateData(this.state.data).then(data => {
-        this.props.onUpdateSuccess(data)
-      }, err => {
-        this.setState({ errors: this.props.onUpdateError(err) })
-      })
-    }
-  }
-
   componentDidMount() {
     const fetcher = this.getFetcher()
 
@@ -72,6 +44,52 @@ class CRUDForm extends Component {
     }
   }
 
+  handleDataChange = data => this.setState({ data })
+
+  handleSubmit = e => {
+    e.preventDefault()
+
+    const fetcher = this.getFetcher()
+
+    if (this.props.mode === CRUDFORM_MODE_NEW) {
+      fetcher.createData(this.state.data).then(data => {
+        this.props.onCreateSuccess(data)
+        if(this.props.submitAction() !== undefined) {
+          this.props.submitAction()
+        }
+      }, err => {
+        this.setState({ errors: this.props.onCreateError(err) })
+      })
+    }
+    if (this.props.mode === CRUDFORM_MODE_UPDATE) {
+      fetcher.updateData(this.state.data).then(data => {
+        this.props.onUpdateSuccess(data)
+        if(this.props.submitAction() !== undefined) {
+          this.props.submitAction()
+        }
+      }, err => {
+        this.setState({ errors: this.props.onUpdateError(err) })
+      })
+    }
+  }
+
+  handleDelete = ()  => {
+    const fetcher = this.getFetcher()
+    fetcher.deleteData(this.state.data).then(data => {
+      this.props.onDeleteSuccess(data)
+      if(this.props.submitAction() !== undefined) {
+        this.props.submitAction()
+      }
+    }, err => {
+      this.setState({errors: this.props.onDeleteError(err) })
+    })
+  }
+
+  getFetcher() {
+    const CustomFetcher = this.props.customFetcher ? this.props.customFetcher : RestFetcher
+    return new CustomFetcher(this.props.config)
+  }
+
   render() {
     if (!this.state.isLoaded) {
       return <Loader />
@@ -80,8 +98,10 @@ class CRUDForm extends Component {
     return <Form
       config={this.props.config.groups}
       data={this.state.data}
+      delete={this.props.delete}
       onDataChange={this.handleDataChange}
       onSubmit={this.handleSubmit}
+      onDelete={this.handleDelete}
       submitButtonText={this.props.config.submitButtonText}
     />
   }
@@ -90,6 +110,9 @@ class CRUDForm extends Component {
 CRUDForm.propTypes = {
   mode: PropTypes.oneOf(CRUDFORM_MODES).isRequired,
   config: PropTypes.object.isRequired,
+  delete: PropTypes.bool,
+  submitAction : PropTypes.func,
+  customFetcher: PropTypes.any,
 
   onCreateSuccess: PropTypes.func,
   onUpdateSuccess: PropTypes.func,
@@ -101,9 +124,11 @@ CRUDForm.propTypes = {
 }
 
 CRUDForm.defaultProps = {
+  delete : false,
   onCreateSuccess: noop,
   onUpdateSuccess: noop,
   onDeleteSuccess: noop,
+  submitAction: undefined,
 
   onCreateError: (err) => err,
   onUpdateError: (err) => err,

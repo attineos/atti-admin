@@ -19,9 +19,7 @@ class RestFetcher {
     return fetch(this.config.urls.get, {
       method: this.config.urls.getMethod || 'GET',
       headers: this.headers,
-    }).then((resp) => {
-      return resp.json()
-    })
+    }).then((resp) => resp.json())
   }
 
   createData(data) {
@@ -29,9 +27,7 @@ class RestFetcher {
       method: this.config.urls.createMethod || 'POST',
       headers: this.headers,
       body: JSON.stringify(data),
-    }).then((resp) => {
-      return resp.json()
-    })
+    }).then((resp) => resp.json())
   }
 
   updateData(data) {
@@ -39,10 +35,17 @@ class RestFetcher {
       method: this.config.urls.updateMethod || 'PATCH',
       headers: this.headers,
       body: JSON.stringify(data),
-    }).then((resp) => {
-      return resp.json()
-    })
+    }).then((resp) => resp.json())
   }
+
+  deleteData(data) {
+    return fetch(this.config.urls.delete, {
+      method: this.config.urls.deleteMethod || 'DELETE',
+      headers: this.headers,
+      body: JSON.stringify(data),
+    }).then((resp) => resp.json())
+  }
+
 
 }
 

@@ -8,20 +8,6 @@ import FormGroup from '../FormGroup'
 
 class Form extends Component {
 
-  getConfig() {
-    const newConfig = cloneDeep(this.props.config)
-
-    forEach(newConfig, groupConfig => {
-      forEach(groupConfig.fields, field => {
-        set(field, 'value', get(this.props.data, field.field, ''))
-        set(field, 'error', get(this.props.errors, field.field, null))
-        set(field, 'onChange', this.handleValueChange(field.field))
-      })
-    })
-
-    return newConfig
-  }
-
   handleValueChange = (fieldName) => (e) => {
     let newValue = e
     if ('preventDefault' in e) {
@@ -36,6 +22,20 @@ class Form extends Component {
     this.props.onDataChange(newData)
   }
 
+  getConfig() {
+    const newConfig = cloneDeep(this.props.config)
+
+    forEach(newConfig, groupConfig => {
+      forEach(groupConfig.fields, field => {
+        set(field, 'value', get(this.props.data, field.field, ''))
+        set(field, 'error', get(this.props.errors, field.field, null))
+        set(field, 'onChange', this.handleValueChange(field.field))
+      })
+    })
+
+    return newConfig
+  }
+
   render() {
     const config = this.getConfig()
 
@@ -44,7 +44,12 @@ class Form extends Component {
         key={groupConfig.name}
         {...groupConfig}
       />))}
-      <Button type="submit">{this.props.submitButtonText || 'Send'}</Button>
+      {this.props.delete &&
+        <Button onClick={() => this.props.onDelete()}> Delete </Button>
+      }
+      {!this.props.delete &&
+        <Button type="submit">{this.props.submitButtonText}</Button>
+      }
     </form>
   }
 }
@@ -52,14 +57,20 @@ class Form extends Component {
 Form.propTypes = {
   config: PropTypes.array.isRequired,
   data: PropTypes.object.isRequired,
+  delete: PropTypes.bool,
   onSubmit: PropTypes.func,
   onDataChange: PropTypes.func,
+  onDelete: PropTypes.func,
+  submitButtonText: PropTypes.string,
   errors: PropTypes.array.isRequired,
 }
 
 Form.defaultProps = {
+  delete : false,
+  onDelete : noop,
   onSubmit: noop,
   onDataChange: noop,
+  submitButtonText: 'Send',
   errors: [],
 }
 
